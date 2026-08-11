@@ -3,13 +3,20 @@ import { HugeiconsIcon } from '@hugeicons/react'
 import { useState } from 'react'
 import logoApp from '../../../assets/icon/simanis-blue-text.svg'
 import imageAssets from '../../../assets/image/simanis-storage-image-potrait.png'
+import { useLoginReq } from './-mutation'
+import type { LoginError } from '../../../types/auth.types'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 const LoginPage = () => {
-  const [accountName, setAccountName] = useState('');
+  const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [errorButton, setErrorButton] = useState(false);
   const [toast, setToast] = useState({show: false, type: '', message: ''});
-  const [error, setError] = useState({accountName: false, password: false});
+  const [error, setError] = useState({identifier: false, password: false});
+  const loginMutation = useLoginReq();
+  const navigate = useNavigate();
 
   const showToast = (type: string, message: string) => {
     setToast({
@@ -27,19 +34,50 @@ const LoginPage = () => {
     });
   };
 
-  const allFormComplete = (accountName: string, password: string) => {
-    if(accountName.trim() && password.trim()){
+  const allFormComplete = (identifier: string, password: string) => {
+    if(identifier.trim() && password.trim()){
       hideToast();
     }
   }
 
   const handleLogin = () => {
     const allFormError = {
-      accountName: !accountName.trim(),
+      identifier: !identifier.trim(),
       password: !password.trim()
     }
+    loginMutation.mutate({
+      identifier: identifier,
+      password: password
+    },{
+      onSuccess: (response) => {
+        console.log('Login Berhasil', response)
+        console.log('Role:', response.data.user.role)
+        const role = response.data.user.role
+        if(role === "super_admin"){
+          navigate('/super_admin/dashboard')
+        } else if(role === "ADMIN"){
+          navigate('/admin/dashboard')
+        } else if(role === "USER"){
+          navigate('/user/home')
+        } else (
+          console.log('Role tidak dikenali:', role)
+        )
+      },
+      onError: (error) => {
+        if(axios.isAxiosError<LoginError>(error)){
+          const response = error.response?.data;
+          const status = error.response?.status;
+          if(response){
+            showToast('error', response.message);
+          }
+          if(status === 429){
+            setErrorButton(true)
+          }
+        }
+      }
+    })
     setError(allFormError);
-    if(allFormError.accountName || allFormError.password){
+    if(allFormError.identifier || allFormError.password){
       showToast('error', 'Email/Username dan Password tidak boleh kosong!')
       return;
     }
@@ -47,7 +85,7 @@ const LoginPage = () => {
   return (
     <div className="bg-[#FFFFFF] h-screen flex">
       <div className="form-page flex justify-center items-center px-10 w-1/2">
-        <form className="flex flex-col gap-4 w-100">
+        <form autoComplete='off' className="flex flex-col gap-4 w-100">
           <div className="logo flex justify-center">
             <img src={logoApp} alt="SIMANIS Blue Text" className="w-60"/>
           </div>
@@ -58,7 +96,7 @@ const LoginPage = () => {
           <div className="form-input flex flex-col gap-4">
             <div className="input-group flex flex-col">
             <label className="text-[12px] text-[#000000] font-semibold tracking-[.15em]">EMAIL/USERNAME</label>
-            <div className={`wrapper-input flex gap-2 items-center w-full border-2 px-3 py-1.5 rounded ${error.accountName ? 'border-[#FF0000]' : "border-2 hover:border-[#001d74] focus-within:border-[#001d74]"} transition-all duration-300`}>
+            <div className={`wrapper-input flex gap-2 items-center w-full border-2 px-3 py-1.5 rounded ${error.identifier ? 'border-[#FF0000]' : "border-2 hover:border-[#001d74] focus-within:border-[#001d74]"} transition-all duration-300`}>
               <span><HugeiconsIcon icon={User02Icon} size={24} className="text-[#646464]"/></span>
               <input 
                 type="text" 
@@ -66,11 +104,11 @@ const LoginPage = () => {
                 id="nameAccount" 
                 onChange={(e) => {
                   const value = e.target.value;
-                  setAccountName(e.target.value);
+                  setIdentifier(e.target.value);
                   if(e.target.value.trim()){
                     setError((prev) => ({
                       ...prev,
-                      accountName: false
+                      identifier: false
                     }));
                   }
                   allFormComplete(password, value)
@@ -81,7 +119,7 @@ const LoginPage = () => {
             </div>
             <div className="input-group flex flex-col">
               <label className="text-[12px] text-[#000000] font-semibold tracking-[.15em]">KATA SANDI</label>
-              <div className={`wrapper-input flex gap-2 items-center w-full border-2 px-3 py-1.5 rounded ${error.password ? 'border-[#FF0000]' : "border-2 hover:border-[#001d74] focus-within:border-[#001d74]"} transition-all duration-300`}>
+              <div className={`wrapper-input relative flex gap-2 items-center w-full border-2 px-3 py-1.5 rounded ${error.password ? 'border-[#FF0000]' : "border-2 hover:border-[#001d74] focus-within:border-[#001d74]"} transition-all duration-300`}>
                 <span><HugeiconsIcon icon={LockPasswordIcon} size={22} className="text-[#646464]"/></span>
                 <input 
                   type={showPassword ? "text" : "password"} 
@@ -95,11 +133,11 @@ const LoginPage = () => {
                         password: false
                       }));
                     }
-                    allFormComplete(accountName, value)
+                    allFormComplete(identifier, value)
                   }}
                   placeholder='••••••••••' 
                   className="outline-none w-full text-[14px] text-[#000000]"/>
-                <button type='button' onClick={() => setShowPassword(!showPassword)} className="absolute right-2 top-1/2 -translate-y-1/2 hover:text-[#001d74] cursor-pointer transition-all duration-300">{showPassword ? <HugeiconsIcon icon={ViewOffSlashIcon} size={22}/> : <HugeiconsIcon icon={ViewIcon} size={22}/>}</button>
+                <button type='button' onClick={() => setShowPassword(!showPassword)} className="absolute right-2 top-1/2 -translate-y-1/2 hover:text-[#001d74] cursor-pointer transition-all duration-300"><HugeiconsIcon icon={showPassword ? ViewOffSlashIcon : ViewIcon} size={22}/></button>
               </div>
             </div>
           </div>
@@ -119,7 +157,7 @@ const LoginPage = () => {
             </div>
           </div>
           <div className="btn-submit">
-            <button type='button' onClick={handleLogin} className="flex items-center gap-1 text-[16px] bg-[#001d74] text-[#FFFFFF] w-full justify-center px-4 py-2 cursor-pointer rounded hover:bg-[#001556] transition-all duration-300">Masuk <HugeiconsIcon icon={ArrowRight02Icon} size={22}/></button>
+            <button type='button' onClick={handleLogin} disabled={loginMutation.isPending || errorButton} className={`flex items-center gap-1 text-[16px] bg-[#001d74] text-[#FFFFFF] w-full justify-center px-4 py-2 rounded ${errorButton ? "cursor-not-allowed" : "cursor-pointer"} hover:bg-[#001556] transition-all duration-300`}>{loginMutation.isPending ? "Loading..." : "Masuk"} <HugeiconsIcon icon={ArrowRight02Icon} size={22}/></button>
           </div>
           <div className="signup-link justify-center flex">
             <p className="text-[14px] text-[#000000]">Belum memiliki akun? <a href="/auth/register" className="text-[#001d74] hover:text-[#d4d113] transition-all duration-300">Daftar sekarang</a></p>
