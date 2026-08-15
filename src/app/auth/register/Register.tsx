@@ -1,107 +1,103 @@
-import { ArrowRight02Icon, Building03Icon, Location03Icon, LockPasswordIcon, Mail02Icon, PackageIcon, PhoneCall, School01Icon, User02Icon, ViewIcon, ViewOffSlashIcon } from '@hugeicons/core-free-icons'
+import ratmanImage from '../../../assets/image/auth-image/ratman-say-welcome-image.png'
+import backgroundImage from '../../../assets/image/auth-image/auth-image-section-background.png'
+import logoApp from '../../../assets/icon/simanis-white-text-logo.svg'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { useState } from 'react'
-import logoApp from '../../../assets/icon/simanis-blue-text.svg'
-import imageAssets from '../../../assets/image/simanis-storage-image-potrait.png'
+import { Building02Icon, Call02Icon, Location03Icon, LockPasswordIcon, MailAtSign02Icon, School01Icon, User03Icon, ViewIcon, ViewOffSlashIcon } from '@hugeicons/core-free-icons'
 
 const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [schoolSet, setSchoolSet] = useState('');
-  const [companySet, setCompanySet] = useState('');
   return (
-    <div className="bg-[#FFFFFF] h-screen flex">
-      <div className="form-page flex justify-center items-center px-10 w-1/2">
-        <form className="flex flex-col gap-4 w-130">
-          <div className="logo flex justify-center">
-            <img src={logoApp} alt="SIMANIS Blue Text" className="w-60"/>
+    <div className="bg-[#FFFFFF] min-h-screen flex p-10 items-center">
+      <div className="image-section relative flex z-1 w-1/2 h-full rounded-xl bg-cover bg-center" style={{backgroundImage: `url(${backgroundImage})`}}>
+        <div className="image absolute z-10 bottom-0 right-12">
+          <img src={ratmanImage} alt="Ratman say hello image" width={500} height={500}/>
+        </div>
+        <div className="text-logo absolute z-10 m-5 flex flex-col gap-3">
+          <img src={logoApp} alt="SIMANIS" width={150} height={150}/>
+          <p className="text-[#434343]">“Inventory Management System An all-in-one platform to monitor, record, and control your entire inventory effortlessly.”</p>
+        </div>
+      </div>
+      <div className="form-section w-1/2 flex justify-center p-5">
+        <form className="w-140 flex flex-col gap-4">
+          <div className="title-text flex flex-col gap-5 text-center">
+            <h1 className="font-bold text-[35px] text-normal-blue">SIGN UP</h1>
+            <p className="text-[#6e6e6e]">Create an Account</p>
           </div>
-          <div className="opening-text text-center">
-            <p className="text-[#626262] text-[14px]">Buat akun dan mulailah manage barang inventaris dan sarana anda.</p>
+          <div className="input-wrapper-group flex gap-2">
+            <div className="input-group">
+              <label className="font-medium text-normal-navy">Username</label>
+              <div className="wrapper-input flex items-center gap-3 border border-[#6B7280] px-4 py-2 rounded hover:border-normal-blue focus-within:border-normal-blue transition-all duration-300">
+                <HugeiconsIcon icon={User03Icon} size={22} className="text-[#6B7280]"/>
+                <hr className="m-0 h-6 w-px border-0 bg-light-active-neutral" />
+                <input type="text" name="text" id="text" placeholder='jhon.doe' className="outline-none w-full placeholder:text-[#6B7280]"/>
+              </div>
+            </div>  
+            <div className="input-group">
+              <label className="font-medium text-normal-navy">Email</label>
+              <div className="wrapper-input flex items-center gap-3 border border-[#6B7280] px-4 py-2 rounded hover:border-normal-blue focus-within:border-normal-blue transition-all duration-300">
+                <HugeiconsIcon icon={MailAtSign02Icon} size={22} className="text-[#6B7280]"/>
+                <hr className="m-0 h-6 w-px border-0 bg-light-active-neutral" />
+                <input type="email" name="email" id="email" placeholder='user@example.com' className="outline-none w-full placeholder:text-[#6B7280]"/>
+              </div>
+            </div>  
           </div>
-          <div className="form-input flex flex-col gap-2">
-            <div className="wrapper-input-group flex gap-2">
-              <div className="input-group flex flex-col w-full">
-                <label className="text-[12px] text-[#000000] font-semibold tracking-[.15em]">NAMA LENGKAP</label>
-                <div className="wrapper-input flex gap-2 items-center w-full border-2 px-3 py-1.5 rounded hover:border-[#001d74] focus-within:border-[#001d74] transition-all duration-300">
-                  <span><HugeiconsIcon icon={User02Icon} size={24} className="text-[#646464]"/></span>
-                  <input type="text" name="name_account" id="nameAccount" placeholder='Masukkan nama lengkap anda' className="outline-none w-full text-[14px] text-[#000000] placeholder:text-[#a7a7a7]"/>
-                </div>
+          <div className="input-wrapper-group flex gap-2">
+            <div className="input-group">
+              <label className="font-medium text-normal-navy">School Name</label>
+              <div className="wrapper-input flex items-center gap-3 border border-[#6B7280] px-4 py-2 rounded hover:border-normal-blue focus-within:border-normal-blue transition-all duration-300">
+                <HugeiconsIcon icon={School01Icon} size={22} className="text-[#6B7280]"/>
+                <hr className="m-0 h-6 w-px border-0 bg-light-active-neutral" />
+                <input type="text" name="school_name" id="schoolName" placeholder='St.Jude Academy' className="outline-none w-full placeholder:text-[#6B7280]"/>
               </div>
-              <div className="input-group flex flex-col w-full">
-                <label className="text-[12px] text-[#000000] font-semibold tracking-[.15em]">EMAIL</label>
-                <div className="wrapper-input flex gap-2 items-center w-full border-2 px-3 py-1.5 rounded hover:border-[#001d74] focus-within:border-[#001d74] transition-all duration-300">
-                  <span><HugeiconsIcon icon={Mail02Icon} size={24} className="text-[#646464]"/></span>
-                  <input type="email" name="email" id="email" placeholder='Masukkan alamat email anda' className="outline-none w-full text-[14px] text-[#000000] placeholder:text-[#a7a7a7]"/>
-                </div>
+            </div>  
+            <div className="input-group">
+              <label className="font-medium text-normal-navy">Company Name</label>
+              <div className="wrapper-input flex items-center gap-3 border border-[#6B7280] px-4 py-2 rounded hover:border-normal-blue focus-within:border-normal-blue transition-all duration-300">
+                <HugeiconsIcon icon={Building02Icon} size={22} className="text-[#6B7280]"/>
+                <hr className="m-0 h-6 w-px border-0 bg-light-active-neutral" />
+                <input type="text" name="company_name" id="companyName" placeholder='TechCorp Industries' className="outline-none w-full placeholder:text-[#6B7280]"/>
               </div>
+            </div>  
+          </div>
+          <div className="input-group">
+            <label className="font-medium text-normal-navy">Address</label>
+            <div className="wrapper-input flex items-center gap-3 border border-[#6B7280] px-4 py-2 rounded hover:border-normal-blue focus-within:border-normal-blue transition-all duration-300">
+              <HugeiconsIcon icon={Location03Icon} size={22} className="text-[#6B7280]"/>
+              <hr className="m-0 h-16 w-px border-0 bg-light-active-neutral" />
+              <textarea name="address" id="address" rows={3} placeholder='123 Main Street' className="outline-none w-full placeholder:text-[#6B7280] "/>
             </div>
-            <div className="wrapper-input-group flex flex-col gap-1">
-              <div className="wrapper flex gap-2">
-                <div className="input-group flex flex-col w-full">
-                  <label className={`text-[12px] font-semibold tracking-[.15em] ${companySet ? "text-[#cacaca]" : "text-[#000000]"}`}>NAMA INSTANSI / SEKOLAH</label>
-                  <div className={`wrapper-input flex gap-2 items-center w-full border-2 px-3 py-1.5 rounded transition-all duration-300 ${companySet.trim() ? 'border-[#cacaca] cursor-not-allowed' : 'hover:border-[#001d74] focus-within:border-[#001d74]'}`}>
-                    <span><HugeiconsIcon icon={School01Icon} size={24} className={`${companySet ? "text-[#cacaca]" : "text-[#646464]"}`}/></span>
-                    <input type="text" name="school_name" value={schoolSet} disabled={companySet.trim().length > 0} id="schoolName" onChange={(e) => setSchoolSet(e.target.value)} placeholder='Masukkan nama sekolah anda' className={`outline-none w-full text-[14px] text-[#000000] ${companySet.trim() ? 'placeholder:text-[#cacaca] cursor-not-allowed' : 'placeholder:text-[#a7a7a7]'}`}/>
-                  </div>
-                </div>
-                <div className="input-group flex flex-col w-full">                                           
-                  <label className={`text-[12px] font-semibold tracking-[.15em] ${schoolSet ? "text-[#cacaca]" : "text-[#000000]"}`}>NAMA PERUSAHAAN</label>
-                  <div className={`wrapper-input flex gap-2 items-center w-full border-2 px-3 py-1.5 rounded transition-all duration-300 ${schoolSet.trim() ? 'border-[#cacaca] cursor-not-allowed' : 'hover:border-[#001d74] focus-within:border-[#001d74]'}`}>
-                    <span><HugeiconsIcon icon={Building03Icon} size={24} className={`${schoolSet ? "text-[#cacaca]" : "text-[#646464]"}`}/></span>
-                    <input type="text" name="company_name" value={companySet} disabled={schoolSet.trim().length > 0} id="companyName" onChange={(e) => setCompanySet(e.target.value)} placeholder='Masukkan nama perusahaan anda' className={`outline-none w-full text-[14px] text-[#000000] ${schoolSet.trim() ? 'placeholder:text-[#cacaca] cursor-not-allowed' : 'placeholder:text-[#a7a7a7]'}`}/>
-                  </div>
-                </div>
-              </div>
-              <p className="text-[13px] text-[#a7a7a7]"><i><span className="font-bold">Catatan:</span> Nama instansi dan nama perusahaan hanya dapat diisi salah satu saja.</i></p>
+          </div>
+          <div className="input-group">
+            <label className="font-medium text-normal-navy">Phone Number</label>
+            <div className="wrapper-input flex items-center gap-3 border border-[#6B7280] px-4 py-2 rounded hover:border-normal-blue focus-within:border-normal-blue transition-all duration-300">
+              <HugeiconsIcon icon={Call02Icon} size={22} className="text-[#6B7280]"/>
+              <hr className="m-0 h-8 w-px border-0 bg-light-active-neutral" />
+              <input type='number' name="phone_number" id="phoneNumber" placeholder='+62 *******' className="outline-none w-full placeholder:text-[#6B7280] "/>
             </div>
-            <div className="input-group flex flex-col w-full">
-              <label className="text-[12px] text-[#000000] font-semibold tracking-[.15em]">ALAMAT</label>
-              <div className="wrapper-input flex gap-2 items-center w-full border-2 px-3 py-1.5 rounded hover:border-[#001d74] focus-within:border-[#001d74] transition-all duration-300">
-                <span><HugeiconsIcon icon={Location03Icon} size={24} className="text-[#646464]"/></span>
-                <textarea name="address" id="address" rows={2} placeholder='Masukkan nama sekolah anda' className="outline-none resize-none w-full text-[14px] text-[#000000] placeholder:text-[#a7a7a7]"/>
-              </div>
-            </div>
-            <div className="input-group flex flex-col w-full">
-              <label className="text-[12px] text-[#000000] font-semibold tracking-[.15em]">NOMOR TELEPON</label>
-              <div className="wrapper-input flex gap-2 items-center w-full border-2 px-3 py-1.5 rounded hover:border-[#001d74] focus-within:border-[#001d74] transition-all duration-300">
-                <span><HugeiconsIcon icon={PhoneCall} size={24} className="text-[#646464]"/></span>
-                <input type="number" name="phone_number" id="phoneNumber" placeholder='Masukkan nama sekolah anda' className="outline-none w-full text-[14px] text-[#000000] placeholder:text-[#a7a7a7]"/>
-              </div>
-            </div>
-            <div className="input-group flex flex-col">
-              <label className="text-[12px] text-[#000000] font-semibold tracking-[.15em]">KATA SANDI</label>
-              <div className="wrapper-input relative flex gap-2 items-center w-full border-2 px-3 py-1.5 rounded hover:border-[#001d74] focus-within:border-[#001d74] transition-all duration-300">
-                <span><HugeiconsIcon icon={LockPasswordIcon} size={22} className="text-[#646464]"/></span>
-                <input type={showPassword ? "text" : "password"} name="password" id="password" placeholder='••••••••••' className="outline-none w-full text-[14px] text-[#000000] placeholder:text-[#a7a7a7]"/>
-                <button type='button' onClick={() => setShowPassword(!showPassword)} className="absolute right-2 top-1/2 -translate-y-1/2 hover:text-[#001d74] cursor-pointer transition-all duration-300">{showPassword ? <HugeiconsIcon icon={ViewOffSlashIcon} size={22}/> : <HugeiconsIcon icon={ViewIcon} size={22}/>}</button>
-              </div>
+          </div>
+          <div className="input-group">
+            <label className="font-medium text-normal-navy">Password</label>
+            <div className="wrapper-input flex items-center gap-3 border border-[#6B7280] px-4 py-2 rounded hover:border-normal-blue focus-within:border-normal-blue transition-all duration-300">
+              <HugeiconsIcon icon={LockPasswordIcon} size={22} className="text-[#6B7280]"/>
+              <hr className="m-0 h-6 w-px border-0 bg-light-active-neutral" />
+              <input type={showPassword ? "text" : "password"} name="password" id="password" placeholder='••••••••' className="outline-none w-full placeholder:text-[#6B7280]"/>
+              <button type='button' onClick={() => setShowPassword(!showPassword)} className="text-[#6B7280] hover:text-normal-navy cursor-pointer transition-all duration-300"><HugeiconsIcon icon={showPassword ? ViewOffSlashIcon : ViewIcon} size={22}/></button>
             </div>
           </div>
           <div className="btn-submit">
-            <button type='button' className="flex items-center gap-1 text-[16px] bg-[#001d74] text-[#FFFFFF] w-full justify-center px-4 py-2 cursor-pointer rounded hover:bg-[#001556] transition-all duration-300">Daftar <HugeiconsIcon icon={ArrowRight02Icon} size={22}/></button>
+            <button className="w-full bg-normal-blue text-[#FFFFFF] p-2 rounded cursor-pointer hover:bg-normal-hover-blue transition-all duration-300">Sign in</button>
           </div>
-          <div className="signup-link justify-center flex">
-            <p className="text-[14px] text-[#000000]">Sudah punya akun? <a href="/auth/login" className="text-[#001d74] hover:text-[#d4d113] transition-all duration-300">Masuk</a></p>
+          <div className="signup-link flex justify-center">
+            <p>Already have an account?? <a href="/auth/login" className="hover:underline hover:text-normal-blue">Sign In</a></p>
           </div>
+          <span>
+            <hr className="border-light-active-neutral"/>
+          </span>
+          <footer className="flex justify-center">
+            <p className="text-light-active-neutral">&copy; SIMANIS 2026. All rights reserved.</p>
+          </footer>
         </form>
-      </div>
-      <div className="wrapper relative w-1/2 h-screen overflow-hidden">
-        <div className="login-image absolute inset-0 z-0">
-          <img src={imageAssets} alt="SIMANIS" className="h-full w-full object-cover"/>
-          <div className="effect absolute z-10 inset-0 bg-linear-to-b from-transparent to-[#001d74] opacity-70"></div>
-        </div>
-        <div className="carousel-info absolute flex flex-col gap-4 z-20 w-full p-5 bottom-0">
-          <div className="glass-container flex flex-col gap-2 bg-[#ffffff27] border border-[#a7a7a783] backdrop-blur-sm w-90 p-2 rounded">
-            <HugeiconsIcon icon={PackageIcon} size={40} className="text-[#dbc820]"/>
-            <h1 className="text-[20px] font-bold text-[#FFFFFF]">Managemen Inventaris Cerdas</h1>
-            <p className="text-[14px] text-[#c9dcff] font-light">Pantau aset sekolah dengan akurasi tinggi dan pelaporan otomatis.</p>
-          </div>
-          <div className="indicator-carousel flex gap-2">
-            <span className="block w-7 h-1 rounded-full bg-[#dbc820]"></span>
-            <span className="block w-7 h-1 rounded-full bg-[#a8a8a8]"></span>
-            <span className="block w-7 h-1 rounded-full bg-[#a8a8a8]"></span>
-          </div>
-        </div>
       </div>
     </div>
   )
