@@ -1,132 +1,125 @@
-import React from 'react'
+import { useEffect } from "react";
+import { usePricelistReq } from "./-mutation";
 
 const PriceListPage = () => {
+  const tierDescription: Record<string, string> = {
+    SIMANIS_TRIAL: 'Nikmati kesempatan untuk mencoba SIMANIS secara gratis dan rasakan kemudahan dalam mengelola inventaris serta sarana sekolah secara lebih terorganisir. Paket ini cocok bagi sekolah yang ingin mengenal fitur dan alur kerja SIMANIS sebelum beralih ke paket berlangganan.',
+    SIMANIS_MONTHLY: 'Pilihan fleksibel bagi sekolah yang ingin menggunakan SIMANIS tanpa komitmen jangka panjang. Dengan paket bulanan, sekolah dapat mengelola inventaris, sarana, dan berbagai kebutuhan manajemen secara lebih mudah dan terstruktur dengan biaya yang dapat disesuaikan setiap bulannya.',
+    SIMANIS_ANNUAL: 'Pilihan terbaik bagi sekolah yang ingin menggunakan SIMANIS secara berkelanjutan selama satu tahun dengan biaya yang lebih hemat. Paket ini memberikan akses untuk membantu sekolah mengelola inventaris dan sarana secara lebih efektif, terorganisir, dan efisien dalam mendukung aktivitas operasional sehari-hari.',
+    SIMANIS_YEARLY: 'Pilihan terbaik bagi sekolah yang ingin menggunakan SIMANIS secara berkelanjutan selama satu tahun dengan biaya yang lebih hemat. Paket ini memberikan akses untuk membantu sekolah mengelola inventaris dan sarana secara lebih efektif, terorganisir, dan efisien dalam mendukung aktivitas operasional sehari-hari.',
+    SIMANIS_LIFETIME: 'Solusi bagi sekolah yang menginginkan akses SIMANIS dalam jangka panjang tanpa perlu melakukan pembayaran berlangganan secara berkala. Dengan satu kali pembayaran, sekolah dapat menggunakan sistem untuk membantu mengelola inventaris dan sarana secara lebih terstruktur tanpa batas waktu.',
+  };
+  const formatDuration = (duration: number | null) => {
+    if (duration === null) {
+      return "Seumur Hidup";
+    }
+    if (duration === 30) {
+      return "Bulanan";
+    }
+    if (duration === 365) {
+      return "Tahunan";
+    }
+    if (duration === 14) {
+      return "Uji Coba"
+    }
+    return "-";
+  };
+  const formatTierName = (packageType: string) => {
+    if(packageType === 'SIMANIS_TRIAL'){
+      return 'Uji Coba'
+    }
+    if(packageType === 'SIMANIS_MONTHLY'){
+      return 'Bulanan'
+    }
+    if(packageType === 'SIMANIS_ANNUAL' || packageType === 'SIMANIS_YEARLY'){
+      return 'Tahunan'
+    }
+    if(packageType === 'SIMANIS_LIFETIME'){
+      return 'Seumur Hidup'
+    }
+    return ''
+  }
+  const textButtonName = (buttonName: string) => {
+    if(buttonName === 'SIMANIS_TRIAL'){
+      return 'Uji Coba'
+    }
+    if(buttonName === 'SIMANIS_MONTHLY'){
+      return 'Bulanan'
+    }
+    if(buttonName === 'SIMANIS_ANNUAL' || buttonName === 'SIMANIS_YEARLY'){
+      return 'Tahunan'
+    }
+    if(buttonName === 'SIMANIS_LIFETIME'){
+      return 'Seumur Hidup'
+    }
+    return ''
+  }
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat('id-ID').format(price)
+  }
+  const {mutate, data} = usePricelistReq()
+  useEffect(() => {
+    mutate()
+  }, [mutate])
+  const pricelists = data?.data ?? [];
   return (
-    <div className="bg-[#FFFFFF] flex flex-col gap-20 min-h-screen p-10 items-center">
-        <div className="text-head flex flex-col gap-6 items-center">
-            <h1 className="font-bold text-[35px]">Manage <span className="text-normal-blue">Thousands of Items</span> Stress-Free. Start with the Right Plan <span className="text-normal-blue">for You</span></h1>
-            <p className="text-[18px]">Find the perfect fit for your team and streamline your stock control today</p>
+    <div className="min-h-screen bg-[#F7F9FC] px-4 py-10 text-slate-800 sm:px-6 lg:px-10">
+      <div className="mx-auto max-w-4xl">
+        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-normal-navy">
+            SIMANIS
+          </p>
+          <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">
+            Paket Langganan
+          </h1>
+          <p className="mt-4 text-base leading-7 text-slate-600">
+            Pilih paket yang paling sesuai dengan kebutuhan sekolah Anda. SIMANIS hadir untuk membantu
+            mengelola inventaris dengan lebih mudah, cepat, dan terorganisir.
+          </p>
+          {pricelists.map((pricelist) => (
+            <div
+              key={pricelist.id}
+              className={`mt-6 rounded-xl p-5 hover:-translate-y-2 hover:shadow-md shadow-[#a1a1a1] transition-all duration-300 ${
+                pricelist.tier_name === 'SIMANIS_ANNUAL' || pricelist.tier_name === "SIMANIS_YEARLY"
+                  ? "border-2 border-normal-navy bg-white"
+                  : "bg-[#F8FAFC] ring-1 ring-slate-200"
+              }`}
+            >
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <p className="text-sm font-medium text-slate-500">
+                    Jenis Paket
+                  </p>
+                  <h2 className="mt-1 text-xl font-bold text-slate-900">
+                    SIMANIS {formatTierName(pricelist.tier_name)}
+                  </h2>
+                </div>
+                {pricelist.tier_name === "SIMANIS_ANNUAL" || pricelist.tier_name === "SIMANIS_YEARLY" && (
+                  <span className="rounded-full bg-normal-navy px-6 py-2 text-[13px] font-semibold text-white">
+                    Paket Populer
+                  </span>
+                )}
+              </div>
+              <div className="mt-5">
+                <p className="text-3xl font-black text-slate-900">
+                  Rp {formatPrice(pricelist.price)}
+                </p>
+                <p className="mt-1 text-sm text-slate-500">
+                  {formatDuration(pricelist.duration)}
+                </p>
+              </div>
+              <p className="mt-5 text-sm leading-6 text-slate-600">
+                {tierDescription[pricelist.tier_name]}
+              </p>
+              <hr className="border-[#d1d0d0] my-3"/>
+              <span className="flex justify-end">
+                <button className="bg-normal-navy text-[#FFFFFF] px-6 py-3 text-[13px] rounded-full hover:bg-normal-hover-navy cursor-pointer transition-all duration-300">Mulai Paket {textButtonName(pricelist.tier_name)}</button>
+              </span>
+            </div>
+          ))}
         </div>
-        <div className="pricelist-section grid grid-cols-1 md:grid-cols-4 gap-5 w-full max-w-7xl md:max-w-full justify-center">
-            <div className="trial-pricelist flex flex-col gap-4 border border-[#74747468] p-5 rounded-md">
-                <div className="title-header flex flex-col gap-2">
-                    <h1 className="font-semibold text-[22px]">SIMANIS <span className="text-normal-blue">Trial</span></h1>
-                    <p className="font-medium text-normal-neutral">Get full access to core inventory features for 14 days and streamline your management workflow.</p>
-                </div>
-                <div className="price_button flex flex-col gap-5">
-                    <p className="text-[12px] text-normal-neutral"><span className="font-semibold text-[25px]">Free</span>/14 days</p>
-                    <button className="bg-normal-blue w-full p-3 rounded font-medium text-[#FFFFFF] hover:bg-normal-hover-blue cursor-pointer transition-all duration-300">Get Simanis Trial</button>
-                </div>
-                <div className="description-pricelist flex flex-col gap-4 font-medium text-[13px]">
-                    <div className="flex flex-col gap-1">
-                        <h4 className="font-semibold text-normal-neutral">Usage Limits</h4>
-                        <p className="text-normal-navy">14-Day <span className="text-normal-blue">Free Access</span> Experience the full inventory digitalization workflow completely free before committing to a subscription plan</p>
-                    </div>
-                    <div className="flex flex-col gap-1">
-                        <h4 className="font-semibold text-normal-neutral">Inventory & Member Management</h4>
-                        <p className="text-normal-navy">Capacity for up to <span className="text-normal-blue">50 Items</span> & <span className="text-normal-blue">100 Borrowers</span> Ample capacity to test physical stock tracking and the member portal in a controlled environment</p>
-                    </div>
-                    <div className="flex flex-col gap-1">
-                        <h4 className="font-semibold text-normal-neutral">Operasional QR Code</h4>
-                        <p className="text-normal-navy">QR Code Engine & <span className="text-normal-blue">Dual-Action Scan</span> Access label generation and automatic scanning for seamless check-in and check-out transactions</p>
-                    </div>
-                    <div className="flex flex-col gap-1">
-                        <h4 className="font-semibold text-normal-neutral">Operator Admin Account</h4>
-                        <p className="text-normal-navy">Includes <span className="text-normal-blue">1 dedicated</span> access account for your operational inventory staff</p>
-                    </div>
-                </div>
-            </div>
-            <div className="monthly-pricelist flex flex-col gap-4 border border-[#74747468] p-5 rounded-md">
-                <div className="title-header flex flex-col gap-2">
-                    <h1 className="font-semibold text-[22px]">SIMANIS <span className="text-normal-blue">Monthly</span></h1>
-                    <p className="font-medium text-normal-neutral">Unlock complete inventory management capabilities with flexible monthly billing.</p>
-                </div>
-                <div className="price_button flex flex-col gap-5">
-                    <p className="text-[12px] text-normal-neutral"><span className="font-semibold text-[25px]">IDR 250.000</span>/Month</p>
-                    <button className="bg-normal-blue w-full p-3 rounded font-medium text-[#FFFFFF] hover:bg-normal-hover-blue cursor-pointer transition-all duration-300">Get Simanis Monthly</button>
-                </div>
-                <div className="description-pricelist flex flex-col gap-4 font-medium text-[13px]">
-                    <div className="flex flex-col gap-1">
-                        <h4 className="font-semibold text-normal-neutral">Usage Limits</h4>
-                        <p className="text-normal-navy">Flexible Capacity with No Long-Term Commitment The perfect solution for efficient monthly operations with flexible recurring billing</p>
-                    </div>
-                    <div className="flex flex-col gap-1">
-                        <h4 className="font-semibold text-normal-neutral">Inventory & Member Management</h4>
-                        <p className="text-normal-navy">Up to <span className="text-normal-blue">1,000 Items</span> & <span className="text-normal-blue">Unlimited Borrowers</span> Manage thousands of inventory items and grant member portal access to all students or employees without restrictions.</p>
-                    </div>
-                    <div className="flex flex-col gap-1">
-                        <h4 className="font-semibold text-normal-neutral">Operasional QR Code</h4>
-                        <p className="text-normal-navy">QR Code Engine & <span className="text-normal-blue">Dual-Action Scan</span> Access label generation and automatic scanning for seamless check-in and check-out transactions</p>
-                    </div>
-                    <div className="flex flex-col gap-1">
-                        <h4 className="font-semibold text-normal-neutral">Operator Admin Account</h4>
-                        <p className="text-normal-navy">Up <span className="text-normal-blue">to 5 Operator Admin</span> Accounts Expand team collaboration by assigning up to 5 accounts for inventory staff</p>
-                    </div>
-                    <div className="flex flex-col gap-1">
-                        <h4 className="font-semibold text-normal-neutral">Operations & Reporting</h4>
-                        <p className="text-normal-navy">Advanced <span className="text-normal-blue">Report Exporting Enhanced access</span> to reporting features with the ability to export inventory history to Excel or PDF formats</p>
-                    </div>
-                </div>
-            </div>
-            <div className="trial-pricelist flex flex-col gap-4 border border-[#74747468] p-5 rounded-md">
-                <div className="title-header flex flex-col gap-2">
-                    <p>BEST CHOICE</p>
-                    <h1 className="font-semibold text-[22px]">SIMANIS <span className="text-normal-blue">Annual</span></h1>
-                    <p className="font-medium text-normal-neutral">Maximize operational efficiency with unlimited access, automated reminders, and cost-saving annual billing</p>
-                </div>
-                <div className="price_button flex flex-col gap-5">
-                    <p className="text-[12px] text-normal-neutral"><span className="font-semibold text-[25px]">Free</span>/14 days</p>
-                    <button className="bg-normal-blue w-full p-3 rounded font-medium text-[#FFFFFF] hover:bg-normal-hover-blue cursor-pointer transition-all duration-300">Get Simanis Trial</button>
-                </div>
-                <div className="description-pricelist flex flex-col gap-4 font-medium text-[13px]">
-                    <div className="flex flex-col gap-1">
-                        <h4 className="font-semibold text-normal-neutral">Usage Limits</h4>
-                        <p className="text-normal-navy">14-Day <span>Free Access</span> Experience the full inventory digitalization workflow completely free before committing to a subscription plan</p>
-                    </div>
-                    <div className="flex flex-col gap-1">
-                        <h4 className="font-semibold text-normal-neutral">Inventory & Member Management</h4>
-                        <p className="text-normal-navy">Capacity for up to <span>50 Items</span> & <span>100 Borrowers</span> Ample capacity to test physical stock tracking and the member portal in a controlled environment</p>
-                    </div>
-                    <div className="flex flex-col gap-1">
-                        <h4 className="font-semibold text-normal-neutral">Operasional QR Code</h4>
-                        <p className="text-normal-navy">QR Code Engine & <span>Dual-Action Scan</span> Access label generation and automatic scanning for seamless check-in and check-out transactions</p>
-                    </div>
-                    <div className="flex flex-col gap-1">
-                        <h4 className="font-semibold text-normal-neutral">Operator Admin Account</h4>
-                        <p className="text-normal-navy">Includes <span>1 dedicated</span> access account for your operational inventory staff</p>
-                    </div>
-                </div>
-            </div>
-            <div className="trial-pricelist flex flex-col gap-4 border border-[#74747468] p-5 rounded-md">
-                <div className="title-header flex flex-col gap-2">
-                    <h1 className="font-semibold text-[22px]">SIMANIS <span className="text-normal-blue">Trial</span></h1>
-                    <p className="font-medium text-normal-neutral">Get full access to core inventory features for 14 days and streamline your management workflow</p>
-                </div>
-                <div className="price_button flex flex-col gap-5">
-                    <p className="text-[12px] text-normal-neutral"><span className="font-semibold text-[25px]">Free</span>/14 days</p>
-                    <button className="bg-normal-blue w-full p-3 rounded font-medium text-[#FFFFFF] hover:bg-normal-hover-blue cursor-pointer transition-all duration-300">Get Simanis Trial</button>
-                </div>
-                <div className="description-pricelist flex flex-col gap-4 font-medium text-[13px]">
-                    <div className="flex flex-col gap-1">
-                        <h4 className="font-semibold text-normal-neutral">Usage Limits</h4>
-                        <p className="text-normal-navy">14-Day <span>Free Access</span> Experience the full inventory digitalization workflow completely free before committing to a subscription plan</p>
-                    </div>
-                    <div className="flex flex-col gap-1">
-                        <h4 className="font-semibold text-normal-neutral">Inventory & Member Management</h4>
-                        <p className="text-normal-navy">Capacity for up to <span>50 Items</span> & <span>100 Borrowers</span> Ample capacity to test physical stock tracking and the member portal in a controlled environment</p>
-                    </div>
-                    <div className="flex flex-col gap-1">
-                        <h4 className="font-semibold text-normal-neutral">Operasional QR Code</h4>
-                        <p className="text-normal-navy">QR Code Engine & <span>Dual-Action Scan</span> Access label generation and automatic scanning for seamless check-in and check-out transactions</p>
-                    </div>
-                    <div className="flex flex-col gap-1">
-                        <h4 className="font-semibold text-normal-neutral">Operator Admin Account</h4>
-                        <p className="text-normal-navy">Includes <span>1 dedicated</span> access account for your operational inventory staff</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>  
+      </div>
+    </div>
   )
 }
 

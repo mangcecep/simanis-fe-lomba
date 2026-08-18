@@ -1,67 +1,107 @@
-import ratmanImage from '../../../assets/image/auth-image/ratman-say-hello-image.png'
-import backgroundImage from '../../../assets/image/auth-image/auth-image-section-background.png'
-import logoApp from '../../../assets/icon/simanis-white-text-logo.svg'
-import { HugeiconsIcon } from '@hugeicons/react'
-import { LockPasswordIcon, MailAtSign02Icon, ViewIcon, ViewOffSlashIcon } from '@hugeicons/core-free-icons'
-import { useState } from 'react'
+import { LockPasswordIcon, Login02Icon, Mail02Icon, ViewIcon, ViewOffSlashIcon } from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
+import { useState } from "react";
+import { useLoginReq } from "./-mutation";
+import { useNavigate } from "react-router-dom";
+import React from "react";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const loginMutation = useLoginReq();
+  const navigate = useNavigate()
+
+  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    loginMutation.mutate(
+      {
+        email,
+        password
+      },{
+        onSuccess: (response) => {
+          console.log(response)
+          const {jwt_token, user} = response.data
+          localStorage.setItem('jwt_token', jwt_token)
+          const role = user.role
+
+          if(role === 'SUPER_ADMIN'){
+            navigate('/super_admin/dashboard')
+          }else if(role === 'ADMIN'){
+            navigate('/admin/dashboard')
+          }else if(role === 'USER'){
+            navigate('/user/dashboard')
+          }
+        },
+        onError: (error) => {
+          console.log(error.message)
+        }
+      }
+    )
+  }
   return (
     <div className="bg-[#FFFFFF] min-h-screen flex items-center p-10">
-      <div className="image-section relative flex z-1 w-1/2 h-full rounded-xl bg-cover bg-center" style={{backgroundImage: `url(${backgroundImage})`}}>
-        <div className="image absolute z-10 -bottom-9 right-12">
-          <img src={ratmanImage} alt="Ratman say hello image" width={500} height={500}/>
-        </div>
-        <div className="text-logo absolute z-10 m-5 flex flex-col gap-3">
-          <img src={logoApp} alt="SIMANIS" width={150} height={150}/>
-          <p className="text-[#434343]">“Inventory Management System An all-in-one platform to monitor, record, and control your entire inventory effortlessly.”</p>
-        </div>
-      </div>
-      <div className="form-section w-1/2 flex justify-center p-5">
-        <form className="w-140 flex flex-col gap-4">
-          <div className="title-text flex flex-col gap-5 text-center">
-            <h1 className="font-bold text-[35px] text-normal-blue">SIGN IN</h1>
-            <p className="text-[#6e6e6e]">Sign in to manage your inventory and assets.</p>
+      <div className="form-section w-1/2 flex justify-center">
+        <form onSubmit={handleLogin} className="flex flex-col gap-6 w-160">
+          <div className="text flex flex-col gap-2">
+            <h1 className="text-[30px] font-bold text-normal-navy">MASUK</h1>
+            <p className="text-[#919191]">Selamat datang kembali dengan SIMANIS!</p>
           </div>
-          <div className="input-group">
-            <label className="font-medium text-normal-navy">Email</label>
-            <div className="wrapper-input flex items-center gap-3 border border-[#6B7280] px-4 py-2 rounded hover:border-normal-blue focus-within:border-normal-blue transition-all duration-300">
-              <HugeiconsIcon icon={MailAtSign02Icon} size={22} className="text-[#6B7280]"/>
-              <hr className="m-0 h-6 w-px border-0 bg-light-active-neutral" />
-              <input type="email" name="email" id="email" placeholder='user@example.com' autoComplete={rememberMe ? "email" : "off"} className="outline-none w-full placeholder:text-[#6B7280]"/>
+          <div className="wrapper-container flex flex-col gap-4">
+            <div className="input-group flex flex-col gap-1">
+              <label className="font-medium">Email</label>
+              <div className="input-wrapper items-center flex gap-2 border px-2 py-2 rounded border-[#919191] hover:border-normal-hover-yellow focus-within:border-normal-active-yellow transition-all duration-300">
+                <HugeiconsIcon icon={Mail02Icon} size={22} className="text-[#4b4b4b]"/>
+                <input 
+                  type="email" 
+                  name="email" 
+                  id="email"
+                  value={email} 
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
+                  placeholder="Masukkan alamat email anda" 
+                  className="w-full outline-none"
+                />
+              </div>
+            </div>
+            <div className="input-group flex flex-col gap-1">
+              <label className="font-medium">Password</label>
+              <div className="input-wrapper items-center flex gap-2 border px-2 py-2 rounded border-[#919191] hover:border-normal-hover-yellow focus-within:border-normal-active-yellow transition-all duration-300">
+                <HugeiconsIcon icon={LockPasswordIcon} size={22} className="text-[#4b4b4b]"/>
+                <input 
+                  type={showPassword ? "text" : "password"} 
+                  name="password" 
+                  id="password" 
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
+                  placeholder="Masukkan password anda" 
+                  className="w-full outline-none"
+                />
+                <button type="button" onClick={() => setShowPassword(!showPassword)} className="cursor-pointer hover:text-normal-hover-neutral"><HugeiconsIcon icon={showPassword ? ViewOffSlashIcon : ViewIcon} size={20}/></button>
+              </div>
             </div>
           </div>
-          <div className="input-group">
-            <label className="font-medium text-normal-navy">Password</label>
-            <div className="wrapper-input flex items-center gap-3 border border-[#6B7280] px-4 py-2 rounded hover:border-normal-blue focus-within:border-normal-blue transition-all duration-300">
-              <HugeiconsIcon icon={LockPasswordIcon} size={22} className="text-[#6B7280]"/>
-              <hr className="m-0 h-6 w-px border-0 bg-light-active-neutral" />
-              <input type={showPassword ? "text" : "password"} name="password" id="password" autoComplete={rememberMe ? "current-password" : "off"} placeholder='••••••••' className="outline-none w-full placeholder:text-[#6B7280]"/>
-              <button type='button' onClick={() => setShowPassword(!showPassword)} className="text-[#6B7280] hover:text-normal-navy cursor-pointer transition-all duration-300"><HugeiconsIcon icon={showPassword ? ViewOffSlashIcon : ViewIcon} size={22}/></button>
-            </div>
-          </div>
-          <div className="signin-options flex items-center justify-between">
+          <div className="form-options flex justify-between items-center">
             <div className="remember-me flex items-center gap-1">
-              <input type="checkbox" name="rememberme" id="rememberMe" onChange={(e) => setRememberMe(e.target.checked)}/>
-              <p className="text-[13px]">Remember Me</p>
+              <input type="checkbox" name="remember_me" id="rememberMe" />
+              <p className="text-[13px]">Ingat Saya</p>
             </div>
             <div className="forgot-password">
-              <a href="#" className="hover:underline hover:text-normal-blue text-[13px]">Forgot Password?</a>
+              <a href="#" className="text-[13px] hover:underline hover:text-normal-hover-yellow">Lupa Password?</a>
             </div>
           </div>
           <div className="btn-submit">
-            <button className="w-full bg-normal-blue text-[#FFFFFF] p-2 rounded cursor-pointer hover:bg-normal-hover-blue transition-all duration-300">Sign in</button>
+            <button type="submit" className="flex items-center gap-1 w-full p-2 bg-normal-navy justify-center text-[#FFFFFF] hover:bg-normal-hover-neutral rounded cursor-pointer transition-all duration-300">{loginMutation.isPending ? 'Loading...' : 'Masuk'}{!loginMutation.isPending && (<HugeiconsIcon icon={Login02Icon} size={17}/>)}</button>
           </div>
-          <div className="signup-link flex justify-center">
-            <p className="text-[13px]">Don't have account? <a href="/auth/register" className="hover:underline hover:text-normal-blue">Sign Up</a></p>
+          <div className="signup-links flex justify-center">
+            <p className="text-[#000000] text-[13px]">Belum punya akun? <a href="/auth/register" className="hover:underline hover:text-normal-hover-yellow">Daftar Sekarang</a></p>
           </div>
-          <span>
-            <hr className="border-light-active-neutral"/>
-          </span>
+          <hr className="border-[#c3c3c3]"/>
           <footer className="flex justify-center">
-            <p className="text-light-active-neutral">&copy; SIMANIS 2026. All rights reserved.</p>
+            <p className="text-[#c3c3c3]">&copy; SIMANIS 2026. All rights reserved.</p>
           </footer>
         </form>
       </div>

@@ -6,45 +6,55 @@
   --color-normal-blue: #4fa0ff;
   --color-normal-neutral: #1a1f2c;
   --color-normal-navy: #364762;
+  --color-normal-yellow: #ffcc4d;
   /*Normal Hover Color*/
   --color-normal-hover-blue: #4790e6;
   --color-normal-hover-neutral: #171c28;
   --color-normal-hover-navy: #314058;
+  --color-normal-hover-yellow: #e6b845;
   /*Normal Active Color*/
   --color-normal-active-blue: #3f80cc;
   --color-normal-active-neutral: #151923;
   --color-normal-active-navy: #2b394e;
+  --color-normal-active-yellow: #cca33e;
 
   /*Light Color*/
   --color-light-blue: #edf6ff;
   --color-light-neutral: #e8e9ea;
   --color-light-navy: #ebedef;
+  --color-light-yellow: #fffaed;
   /*Light Hover Color*/
   --color-light-hover-blue: #e5f1ff;
   --color-light-hover-neutral: #dddddf;
   --color-light-hover-navy: #e1e3e7;
+  --color-light-hover-yellow: #fff7e4;
   /*Light Active Color*/
   --color-light-active-blue: #c8e2ff;
   --color-light-active-neutral: #b8babe;
   --color-light-active-navy: #c1c6ce;
+  --color-light-active-yellow: #ffefc8;
 
   /*Dark Color*/
   --color-dark-blue: #3b78bf;
   --color-dark-neutral: #141721;
   --color-dark-navy: #29354a;
+  --color-dark-yellow: #bf993a;
   /*Dark Hover Color*/
   --color-dark-hover-blue: #2f6099;
   --color-dark-hover-neutral: #10131a;
   --color-dark-hover-navy: #202b3b;
+  --color-dark-hover-yellow: #997a2e;
   /*Dark Active Color*/
   --color-dark-active-blue: #244873;
   --color-dark-active-neutral: #0c0e14;
   --color-dark-active-navy: #18202c;
+  --color-dark-active-yellow: #735c23;
 
   /*Darker Color*/
   --color-darker-blue: #1c3859;
   --color-darker-neutral: #090b0f;
   --color-darker-navy: #131922;
+  --color-darker-yellow: #59471b;
 }
 
 :root {

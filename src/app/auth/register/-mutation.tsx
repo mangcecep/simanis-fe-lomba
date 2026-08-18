@@ -8,6 +8,7 @@ export const useRegisterReq = () => {
     return useMutation({
         mutationFn: auth.register,
         onSuccess: (response: RegisterResponse) => {
+            localStorage.setItem('jwt_token', response.data.jwt_token)
             console.log(response)
         },
         onError: (error) => {

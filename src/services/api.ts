@@ -2,10 +2,10 @@ import axios from "axios";
 
 const api = axios.create({
     baseURL: 'https://exodus-fiber-panoramic.ngrok-free.dev/api',
-    timeout: 1000,
     headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
+        'ngrok-skip-browser-warning': 'true',
     }
 })
 

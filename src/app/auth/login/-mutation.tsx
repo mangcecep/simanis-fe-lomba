@@ -12,7 +12,7 @@ export const useLoginReq = () => {
         },
         onError: (error) => {
             if(axios.isAxiosError<LoginError>(error)){
-                console.log(error.response?.data);
+                console.log(error.response?.data.errors);
             }
         }
     })

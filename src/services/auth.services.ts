@@ -1,8 +1,8 @@
 import api from "./api";
-import type { LoginResponse, RegisterResponse, ResendVerificationEmailResponse } from "../types/auth.types";
+import type { LoginResponse, OtpVerificationResponse, RegisterResponse, ResendOtpVerificationCodeResponse, SchoolSaveResponse } from "../types/auth.types";
 
 const login = async (data:{
-    identifier: string, 
+    email: string, 
     password: string
 }): Promise<LoginResponse> => {
     const res = await api.post<LoginResponse>('/auth/login', data);
@@ -10,26 +10,49 @@ const login = async (data:{
 }
 
 const register = async (data:{
-    username: string,
     email: string,
+    nama_lengkap: string,
     phone_number: string,
-    company_name: string,
-    address: string,
     password: string
 }): Promise<RegisterResponse> => {
     const res = await api.post<RegisterResponse>('/auth/register', data);
     return res.data;
 }
 
-const resendVerificationEmail = async (data:{
-    email: string
-}): Promise<ResendVerificationEmailResponse> => {
-    const res = await api.post<ResendVerificationEmailResponse>('/auth/resend-verification', data);
-    return res.data
+const OtpVerification = async (data:{
+    otp_code: string
+}): Promise<OtpVerificationResponse> => {
+    const res = await api.post<OtpVerificationResponse>('/auth/verify-email', data);
+    return res.data;
+}
+
+const resendEmailOtpCode = async (): Promise<ResendOtpVerificationCodeResponse> => {
+  const response = await api.post<ResendOtpVerificationCodeResponse>(
+    '/auth/resend-otp'
+  );
+  return response.data;
+};
+
+export const logout = () => {
+    localStorage.removeItem('jwt_token')
+}
+
+const schoolSaveData = async (data:{
+    nama_sekolah: string,
+    npsn: string,
+    alamat: string,
+    phone_number: string,
+    timezone: string
+}): Promise<SchoolSaveResponse> => {
+    const res = await api.post<SchoolSaveResponse>('/auth/sekolah', data);
+    return res.data;
 }
 
 export default  {
     login,
     register,
-    resendVerificationEmail
+    resendEmailOtpCode,
+    logout,
+    OtpVerification,
+    schoolSaveData
 };
