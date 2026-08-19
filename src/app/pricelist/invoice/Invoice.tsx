@@ -47,7 +47,7 @@ const InvoicePage = () => {
               </div>
               <div className="flex justify-between gap-3">
                 <span>Email</span>
-                <span className="max-w-[180px] truncate font-semibold text-slate-900">
+                <span className="max-w-45 truncate font-semibold text-slate-900">
                   user@example.com
                 </span>
               </div>

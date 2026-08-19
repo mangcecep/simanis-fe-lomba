@@ -1,7 +1,9 @@
 import { useEffect } from "react";
 import { usePricelistReq } from "./-mutation";
+import { useNavigate } from "react-router-dom";
 
 const PriceListPage = () => {
+  const navigate = useNavigate()
   const tierDescription: Record<string, string> = {
     SIMANIS_TRIAL: 'Nikmati kesempatan untuk mencoba SIMANIS secara gratis dan rasakan kemudahan dalam mengelola inventaris serta sarana sekolah secara lebih terorganisir. Paket ini cocok bagi sekolah yang ingin mengenal fitur dan alur kerja SIMANIS sebelum beralih ke paket berlangganan.',
     SIMANIS_MONTHLY: 'Pilihan fleksibel bagi sekolah yang ingin menggunakan SIMANIS tanpa komitmen jangka panjang. Dengan paket bulanan, sekolah dapat mengelola inventaris, sarana, dan berbagai kebutuhan manajemen secara lebih mudah dan terstruktur dengan biaya yang dapat disesuaikan setiap bulannya.',
@@ -113,7 +115,13 @@ const PriceListPage = () => {
               </p>
               <hr className="border-[#d1d0d0] my-3"/>
               <span className="flex justify-end">
-                <button className="bg-normal-navy text-[#FFFFFF] px-6 py-3 text-[13px] rounded-full hover:bg-normal-hover-navy cursor-pointer transition-all duration-300">Mulai Paket {textButtonName(pricelist.tier_name)}</button>
+                <button
+                  type="button"
+                  onClick={() => navigate(`/payment/${pricelist.id}`)}
+                  className="bg-normal-navy text-[#FFFFFF] px-6 py-3 text-[13px] rounded-full hover:bg-normal-hover-navy cursor-pointer transition-all duration-300"
+                >
+                  Mulai Paket {textButtonName(pricelist.tier_name)}
+                </button>
               </span>
             </div>
           ))}

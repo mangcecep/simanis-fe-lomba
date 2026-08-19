@@ -11,7 +11,6 @@ const PaymentPage = () => {
           </p>
           <h1 className="mt-2 text-3xl font-bold text-slate-900">Pembayaran Langganan</h1>
         </div>
-
         <div className="flex flex-col gap-5">
           <section className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -25,13 +24,11 @@ const PaymentPage = () => {
               </div>
             </div>
           </section>
-
           <div className="grid gap-5 lg:grid-cols-[1.4fr_0.9fr]">
             <section className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
               <div className="mb-5">
                 <h3 className="text-lg font-bold text-slate-900">Data Pengguna</h3>
               </div>
-
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="flex flex-col gap-2">
                   <label htmlFor="fullName" className="text-sm font-medium text-slate-700">
@@ -48,7 +45,6 @@ const PaymentPage = () => {
                     />
                   </div>
                 </div>
-
                 <div className="flex flex-col gap-2">
                   <label htmlFor="email" className="text-sm font-medium text-slate-700">
                     Alamat Email
@@ -83,7 +79,7 @@ const PaymentPage = () => {
                 </div>
                 <div className="flex items-center justify-between gap-3">
                   <span>Alamat Email</span>
-                  <span className="max-w-[170px] truncate font-medium text-slate-900">
+                  <span className="max-w-42.5 truncate font-medium text-slate-900">
                     user@example.com
                   </span>
                 </div>

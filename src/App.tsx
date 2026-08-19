@@ -4,7 +4,11 @@ import { useEffect } from 'react'
 import LandingPage from './app/LandingPage'
 import LoginPage from './app/auth/login/Login'
 import RegisterPage from './app/auth/register/Register'
-import DashboardAdminPage from './app/admin/dashboard/DashboardAdmin'
+import DashboardAdminPage from './app/admin/dashboard/Dashboard'
+import InventoryAdminPage from './app/admin/inventory/Inventory'
+import ArchiveAdminPage from './app/admin/archive/Archive'
+import ManageAccountAdminPage from './app/admin/manage_account/ManageAccount'
+import BorrowedAdminPage from './app/admin/borrowed/Borrowed'
 import PriceListPage from './app/pricelist/PriceList'
 import OtpVerificationPage from './app/auth/otp_verification/OtpVerification'
 import PaymentPage from './app/pricelist/payment/Payment'
@@ -28,6 +32,10 @@ function TitleApp() {
       '/auth/login': 'Login - SIMANIS | Sistem Informasi Managemen Inventaris Sekolah',
       '/auth/register': 'Register - SIMANIS | Sistem Informasi Managemen Inventaris Sekolah',
       '/admin/dashboard' : 'Dashboard - Admin | SIMANIS - Sistem Informasi Managemen Inventaris Sekolah',
+      '/admin/inventory' : 'Data Inventaris - Admin | SIMANIS - Sistem Informasi Managemen Inventaris Sekolah',
+      '/admin/manage_account' : 'Kelola Akun - Admin | SIMANIS - Sistem Informasi Managemen Inventaris Sekolah',
+      '/admin/borrowed' : 'Peminjaman - Admin | SIMANIS - Sistem Informasi Managemen Inventaris Sekolah',
+      '/admin/archive' : 'Arsip - Admin | SIMANIS - Sistem Informasi Managemen Inventaris Sekolah',
       '/auth/otp_verification' : 'Verifikasi Kode OTP - SIMANIS | Sistem Informasi Managemen Inventaris Sekolah',
       '/auth/school-registration' : 'Data Sekolah - SIMANIS | Sistem Informasi Managemen Inventaris Sekolah',
 
@@ -49,7 +57,7 @@ function App() {
       <Routes>
         <Route path='/' element={<LandingPage/>}/>
         <Route path='/pricelist' element={<PriceListPage/>}/>
-        <Route path='/pricelist/payment' element={<PaymentPage/>}/>
+        <Route path='/pricelist/payment/:id' element={<PaymentPage/>}/>
         <Route path='/pricelist/invoice' element={<InvoicePage/>}/>
 
         <Route path='/auth/login' element={<LoginPage/>}/>
@@ -64,6 +72,10 @@ function App() {
         <Route path='/super_admin/archive' element={<ArchiveSuperAdminPage/>}/>
 
         <Route path='/admin/dashboard' element={<DashboardAdminPage/>}/>
+        <Route path='/admin/inventory' element={<InventoryAdminPage/>}/>
+        <Route path='/admin/manage_account' element={<ManageAccountAdminPage/>}/>
+        <Route path='/admin/borrowed' element={<BorrowedAdminPage/>}/>
+        <Route path='/admin/archive' element={<ArchiveAdminPage/>}/>
       </Routes>
     </BrowserRouter>
   )

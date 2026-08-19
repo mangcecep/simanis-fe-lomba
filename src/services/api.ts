@@ -27,6 +27,19 @@ api.interceptors.response.use(
             localStorage.removeItem('jwt_token')
             window.location.href = '/auth/login'
         }
+        if(error.response?.status === 403){
+            const message = error.response?.data?.message;
+            console.error('403 Forbidden:', message)
+            // Jika belum ada paket subscription aktif, redirect ke pricing
+            if(message && message.includes('paket langganan')){
+                window.location.href = '/pricelist'
+            }
+        }
+        console.error('API Error:', {
+            status: error.response?.status,
+            message: error.response?.data?.message,
+            url: error.config?.url
+        })
         return Promise.reject(error)
     }
 )

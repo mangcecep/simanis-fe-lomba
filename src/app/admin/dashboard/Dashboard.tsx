@@ -1,46 +1,35 @@
 import { HugeiconsIcon } from '@hugeicons/react'
 import { Search, UserShield01Icon } from '@hugeicons/core-free-icons'
-import SideBarSuperAdminComponents from '../../components/super_admin_components/SideBarSuperAdmin'
-import NavbarSuperAdminComponents from '../../components/super_admin_components/NavbarSuperAdmin'
-import ChartComponents from './Chart'
-import { useDashboardReq } from './-mutation'
+import SideBarAdminComponents from '../../components/admin_components/SideBarAdmin'
+import NavbarAdminComponents from '../../components/admin_components/NavbarAdmin'
+// import ChartAdminComponents from './Chart'
+// import { useDashboardReq } from '../super_admin/dashboard/-mutation'
 
-const DashboardSuperAdminPage = () => {
-  const { data, isLoading, isError, error } = useDashboardReq();
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-  if (isError) {
-    const errorMessage = error instanceof Error ? error.message : 'Gagal mengambil data dashboard';
-    console.error('Dashboard error:', error);
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <p className="text-red-600 font-semibold">{errorMessage}</p>
-          <p className="text-gray-600 text-sm mt-2">Cek console untuk detail error</p>
-        </div>
-      </div>
-    );
-  }
-  console.log(data);
+const DashboardAdminPage = () => {
+//   const { data, isLoading, isError, error } = useDashboardReq();
+//   if (isLoading) {
+//     return <div>Loading...</div>;
+//   }
+//   if (isError) {
+//     const errorMessage = error instanceof Error ? error.message : 'Gagal mengambil data dashboard';
+//     console.error('Dashboard error:', error);
+//     return (
+//       <div className="flex items-center justify-center min-h-screen">
+//         <div className="text-center">
+//           <p className="text-red-600 font-semibold">{errorMessage}</p>
+//           <p className="text-gray-600 text-sm mt-2">Cek console untuk detail error</p>
+//         </div>
+//       </div>
+//     );
+//   }
+//   console.log(data);
   return (
     <div className="bg-[#FAFAFA] h-screen flex overflow-hidden">
-      <SideBarSuperAdminComponents/>
+      <SideBarAdminComponents/>
       <main className="flex-1 min-w-0 flex flex-col overflow-hidden">
-        <NavbarSuperAdminComponents/>
+        <NavbarAdminComponents/>
         <section className="flex-1 min-h-0 overflow-y-auto p-5 flex flex-col gap-5">
           <div className="stats-card flex gap-4">
-            <div className="card bg-[#FFFFFF] p-5 w-full flex flex-col gap-5 border rounded-sm shadow border-[#d2d1d1]">
-              <div className="title-card flex items-center gap-4">
-                <span className="bg-[#ffeb7c65] p-2 rounded-md text-normal-yellow shadow">
-                  <HugeiconsIcon icon={UserShield01Icon}/>
-                </span>
-                <h1 className="text-[16px] font-semibold">Admin</h1>
-              </div>
-              <div className="count-admin">
-                <p className="text-[28px] font-bold">5</p>
-              </div>
-            </div>
             <div className="card bg-[#FFFFFF] p-5 w-full flex flex-col gap-5 border rounded-sm shadow border-[#d2d1d1]">
               <div className="title-card flex items-center gap-4">
                 <span className="bg-[#ffeb7c65] p-2 rounded-md text-normal-yellow shadow">
@@ -67,7 +56,7 @@ const DashboardSuperAdminPage = () => {
           <div className="wrapper flex gap-5 min-w-0">
             <div className="wrapper flex-1 min-w-0 flex flex-col gap-5">
               <div className="chart-section bg-[#FFFFFF] p-5 h-85 w-full border border-[#d2d1d1] rounded-sm">
-                <ChartComponents chartData={data?.data.chart_statistik ?? []}/>
+                {/* <ChartAdminComponents/> */}
               </div>
               <div className="search-assets bg-white border p-5 flex flex-col gap-4 border-[#d2d1d1] rounded-sm">
                 <div className="search-input bg-[#FFFFFF] px-4 py-2 gap-3 flex items-center border border-[#d2d1d1] rounded-sm shadow hover:border-normal-active-yellow focus-within:border-normal-active-yellow transition-all duration-300">
@@ -130,4 +119,4 @@ const DashboardSuperAdminPage = () => {
   );
 };
 
-export default DashboardSuperAdminPage
+export default DashboardAdminPage
