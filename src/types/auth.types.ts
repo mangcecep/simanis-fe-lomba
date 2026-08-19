@@ -117,6 +117,17 @@ export type SchoolSaveResponse = {
         timezone: string,
         subscription_plan: string,
         subscription_status: string,
+        requires_payment: boolean,
+        order_id: string | null,
+        token_type: string,
+        jwt_token: string,
+        token_expires: string,
+        subscription: {
+            plan: string,
+            status: string,
+            expires_at: string,
+            is_expired: boolean
+        },
         user: {
             id: string,
             email: string,

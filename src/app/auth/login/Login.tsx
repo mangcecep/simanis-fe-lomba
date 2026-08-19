@@ -21,16 +21,22 @@ const LoginPage = () => {
       },{
         onSuccess: (response) => {
           console.log(response)
-          const {jwt_token, user} = response.data
+          const {jwt_token, token_type, user} = response.data
           localStorage.setItem('jwt_token', jwt_token)
+          localStorage.setItem('simanis_user', JSON.stringify(user))
           const role = user.role
+
+          if(token_type !== 'full'){
+            navigate('/pricelist')
+            return
+          }
 
           if(role === 'SUPER_ADMIN'){
             navigate('/super_admin/dashboard')
           }else if(role === 'ADMIN'){
             navigate('/admin/dashboard')
           }else if(role === 'USER'){
-            navigate('/user/dashboard')
+            navigate('/pricelist')
           }
         },
         onError: (error) => {

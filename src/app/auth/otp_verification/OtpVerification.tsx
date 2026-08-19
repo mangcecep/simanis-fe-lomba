@@ -9,7 +9,9 @@ import { AlertCircleIcon, CheckmarkCircle01Icon } from '@hugeicons/core-free-ico
 
 const OtpVerificationPage = () => {
   const location = useLocation();
-  const email = location.state;
+  const state = (location.state ?? {}) as { email?: string; planId?: string | null };
+  const email = state.email ?? '';
+  const planId = state.planId ?? null;
   const [otpCode, setOtpCode] = useState('');
   const [resendCodeTimeDown, setResendCodeTimeDown] = useState(0);
   const navigate = useNavigate()
@@ -42,7 +44,9 @@ const OtpVerificationPage = () => {
       otp_code: otpCode
     },{
       onSuccess: () => {
-        navigate('/auth/school-registration');
+        navigate('/auth/school-registration', {
+          state: { planId }
+        });
       },
       onError: (error) => {
         console.log(error);

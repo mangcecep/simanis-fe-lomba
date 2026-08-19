@@ -1,11 +1,24 @@
 import { HugeiconsIcon } from '@hugeicons/react'
-import { useState } from 'react'
-import { AlertCircleIcon, Call02Icon, LockPasswordIcon, Mail02Icon, User02Icon, UserAddIcon, ViewIcon, ViewOffSlashIcon } from '@hugeicons/core-free-icons'
+import { useEffect, useState } from 'react'
+import { AlertCircleIcon, Call02Icon, CheckmarkCircle01Icon, LockPasswordIcon, Mail02Icon, User02Icon, UserAddIcon, ViewIcon, ViewOffSlashIcon } from '@hugeicons/core-free-icons'
 import { useRegisterReq } from './-mutation'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { AxiosError } from 'axios'
+import { usePricelistReq } from '../../pricelist/-mutation'
+
+const formatTierName = (packageType: string) => {
+  if (packageType === 'SIMANIS_TRIAL') return 'Uji Coba'
+  if (packageType === 'SIMANIS_MONTHLY') return 'Bulanan'
+  if (packageType === 'SIMANIS_ANNUAL' || packageType === 'SIMANIS_YEARLY') return 'Tahunan'
+  if (packageType === 'SIMANIS_LIFETIME') return 'Seumur Hidup'
+  return ''
+}
 
 const RegisterPage = () => {
+  const [searchParams] = useSearchParams()
+  const pricingId = searchParams.get('plan')
+  const { mutate: fetchPlans, data: plansData } = usePricelistReq()
+  const selectedPlan = plansData?.data.find((pricelist) => pricelist.id === pricingId)
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [fullName, setFullName] = useState('');
@@ -14,6 +27,10 @@ const RegisterPage = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const registerMutation = useRegisterReq()
   const navigate = useNavigate()
+
+  useEffect(() => {
+    fetchPlans()
+  }, [fetchPlans])
   
   const handleRegister = () => {
     registerMutation.mutate(
@@ -21,12 +38,16 @@ const RegisterPage = () => {
         email,
         nama_lengkap: fullName,
         phone_number: phoneNumber,
-        password
+        password,
+        pricing_id: pricingId ?? undefined
       },{
         onSuccess: (response) => {
           console.log(response)
           navigate('/auth/otp_verification', {
-            state: response.data.user.email
+            state: {
+              email: response.data.user.email,
+              planId: pricingId,
+            }
           })
         },
         onError: (error: unknown) => {
@@ -61,6 +82,16 @@ const RegisterPage = () => {
           {errorMessage && (
             <span className="bg-[#ffc0c077] px-4 py-1 border rounded border-[#e51616]">
               <p className="flex items-center gap-2 text-[#e51616] text-[12px]"><HugeiconsIcon icon={AlertCircleIcon} size={18}/>{errorMessage}</p>
+            </span>
+          )}
+          {pricingId && (
+            <span className="bg-[#c0ffd577] px-4 py-2 border rounded border-[#16e55e]">
+              <p className="flex items-center gap-2 text-[#16e55e] text-[12px]"><HugeiconsIcon icon={CheckmarkCircle01Icon} size={18}/>Paket langganan terpilih akan otomatis diterapkan setelah pendaftaran.</p>
+              {selectedPlan && (
+                <p className="flex items-center gap-2 text-[#0e6b2e] text-[13px] font-semibold mt-1">
+                  SIMANIS {formatTierName(selectedPlan.tier_name)} - Rp {new Intl.NumberFormat('id-ID').format(selectedPlan.price)}
+                </p>
+              )}
             </span>
           )}
           <div className="wrapper-container flex flex-col gap-4">

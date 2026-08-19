@@ -13,7 +13,8 @@ const register = async (data:{
     email: string,
     nama_lengkap: string,
     phone_number: string,
-    password: string
+    password: string,
+    pricing_id?: string
 }): Promise<RegisterResponse> => {
     const res = await api.post<RegisterResponse>('/auth/register', data);
     return res.data;

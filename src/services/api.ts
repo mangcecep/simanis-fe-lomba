@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: 'https://exodus-fiber-panoramic.ngrok-free.dev/api',
+    baseURL: import.meta.env.VITE_API_BASE_URL || 'https://exodus-fiber-panoramic.ngrok-free.dev/api',
     headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
@@ -27,13 +27,8 @@ api.interceptors.response.use(
             localStorage.removeItem('jwt_token')
             window.location.href = '/auth/login'
         }
-        if(error.response?.status === 403){
-            const message = error.response?.data?.message;
-            console.error('403 Forbidden:', message)
-            // Jika belum ada paket subscription aktif, redirect ke pricing
-            if(message && message.includes('paket langganan')){
-                window.location.href = '/pricelist'
-            }
+        if(error.response?.status === 403 && error.response?.data?.errors?.code === 'PLAN_SELECTION_REQUIRED'){
+            window.location.href = '/pricelist'
         }
         console.error('API Error:', {
             status: error.response?.status,

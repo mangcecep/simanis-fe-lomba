@@ -2,7 +2,7 @@ import { ArrowDown01Icon, Call02Icon, IdentityCardIcon, Location05Icon, School01
 import { HugeiconsIcon } from '@hugeicons/react'
 import { useState, useRef, useEffect } from 'react'
 import { useSchoolSaveReq } from './-mutation'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const timezoneOptions = [
     {
@@ -29,6 +29,9 @@ const SchoolRegistrationPage = () => {
     const [schoolPhoneNumber, setSchoolPhoneNumber] = useState('');
     const schoolSaveMutation = useSchoolSaveReq();
     const navigate = useNavigate();
+    const location = useLocation();
+    const state = (location.state ?? {}) as { planId?: string | null };
+    const planId = state.planId ?? null;
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -55,7 +58,19 @@ const SchoolRegistrationPage = () => {
             },{
                 onSuccess: (response) => {
                     console.log(response)
-                    navigate('/pricelist')
+                    const data = response.data
+                    localStorage.setItem('jwt_token', data.jwt_token)
+                    if (data.requires_payment) {
+                        if (planId) {
+                            navigate(`/pricelist/payment?plan=${planId}`)
+                        } else if (data.order_id) {
+                            navigate(`/pricelist/invoice?order=${data.order_id}`)
+                        } else {
+                            navigate('/pricelist')
+                        }
+                    } else {
+                        navigate('/super_admin/dashboard')
+                    }
                 },
                 onError: (error) => {
                     console.log(error.message)

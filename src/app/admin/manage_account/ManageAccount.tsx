@@ -2,7 +2,6 @@ import SideBarAdminComponents from '../../components/admin_components/SideBarAdm
 import NavbarAdminComponents from '../../components/admin_components/NavbarAdmin'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { EditUser02Icon, Search, Trash2, UserAdd01Icon } from '@hugeicons/core-free-icons'
-import { useState } from 'react'
 
 const ManageAccountAdminPage = () => {
     const accountData = [

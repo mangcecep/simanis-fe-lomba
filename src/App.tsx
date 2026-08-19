@@ -57,7 +57,7 @@ function App() {
       <Routes>
         <Route path='/' element={<LandingPage/>}/>
         <Route path='/pricelist' element={<PriceListPage/>}/>
-        <Route path='/pricelist/payment/:id' element={<PaymentPage/>}/>
+        <Route path='/pricelist/payment' element={<PaymentPage/>}/>
         <Route path='/pricelist/invoice' element={<InvoicePage/>}/>
 
         <Route path='/auth/login' element={<LoginPage/>}/>
